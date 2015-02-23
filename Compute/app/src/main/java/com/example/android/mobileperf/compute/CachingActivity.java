@@ -37,8 +37,7 @@ public class CachingActivity extends Activity {
         theButtonThatDoesFibonacciStuff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Compute the 40th number in the fibonacci sequence, then dump to log output. Note
-                // how the UI hangs each time you do this.
+                // Compute the 40th number in the fibonacci sequence, then dump to log output.
                 Log.i(LOG_TAG, String.valueOf(computeFibonacci(40)));
             }
         });
@@ -53,18 +52,29 @@ public class CachingActivity extends Activity {
     }
 
     /**
-     *  Why store things when you can recurse instead?  Don't let evidence, personal experience,
-     *  or rational arguments from your peers fool you.  The elegant solution is the best solution.
+     * It is important to understand what your code is doing, no matter how simple the task. For
+     * example, most people know better than to compute Fibonacci numbers recursively, but it is
+     * not unusual to unintentionally redo work in your application. Check your app for places
+     * where you can cache current results for future re-use.
+     *
+     * In this case, recursive Fibonacci calls fib8 which calls fib7 and fib6, but that fib7 call
+     * calls fib6 again and fib5, So now you've got two fib6's and one fib5 call, but each of those
+     * fib6 calls will have a fib5 and fib4, so now you have three calls to calculate fib5, blah,
+     * blah, blah.  Recursive fibonacci is terrible.  Iterating lets you calculate fibX once,
+     * use that result twice, and move on.
      *
      * @param positionInFibSequence  The position in the fibonacci sequence to return.
      * @return the nth number of the fibonacci sequence.  Seriously, try to keep up.
      */
     public int computeFibonacci(int positionInFibSequence) {
-        if (positionInFibSequence <= 2) {
-            return 1;
-        } else {
-            return computeFibonacci(positionInFibSequence - 1)
-                    + computeFibonacci(positionInFibSequence - 2);
+        int prev = 0;
+        int current = 1;
+        int newValue;
+        for (int i=1; i<positionInFibSequence; i++) {
+            newValue = current + prev;
+            prev = current;
+            current = newValue;
         }
+        return current;
     }
 }
