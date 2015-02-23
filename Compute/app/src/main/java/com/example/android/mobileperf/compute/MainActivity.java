@@ -35,6 +35,7 @@ public class MainActivity extends Activity {
         ViewGroup rootView = (ViewGroup) findViewById(R.id.main_rootview);
 
         addButton(CachingActivity.class, "Batching and caching", rootView);
+        addButton(BusyUIThreadActivity.class, "Slow onClick handler", rootView);
     }
 
     public void addButton(final Class destination, String description, ViewGroup parent) {

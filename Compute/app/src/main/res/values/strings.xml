@@ -18,5 +18,6 @@
 
     <string name="app_name">Compute</string>
     <string name="title_activity_caching_exercise">Caching Exercise</string>
+    <string name="title_activity_busy_uithread">Busy UI Thread Exercise</string>
 
 </resources>
