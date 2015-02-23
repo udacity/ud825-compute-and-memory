@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
         addButton(DataStructuresActivity.class, "Data structure selection", rootView);
 
         addButton(MemoryLeakActivity.class, "Memory leaks", rootView);
+        addButton(MemoryChurnActivity.class, "Memory churn", rootView);
     }
 
     public void addButton(final Class destination, String description, ViewGroup parent) {

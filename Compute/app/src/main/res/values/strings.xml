@@ -22,5 +22,6 @@
     <string name="title_activity_busy_uithread">Busy UI Thread Exercise</string>
     <string name="title_activity_data_structures">Data Structures Exercise</string>
     <string name="title_activity_memory_leak">Memory Leak Exercise</string>
+    <string name="title_activity_memory_churn">Memory Churn Exercise</string>
 
 </resources>

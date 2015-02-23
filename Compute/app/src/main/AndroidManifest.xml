@@ -63,6 +63,14 @@ limitations under the License.
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.mobileperf.compute.MainActivity" />
         </activity>
+        <activity
+            android:name="com.example.android.mobileperf.compute.MemoryChurnActivity"
+            android:label="@string/title_activity_memory_churn"
+            android:parentActivityName="com.example.android.mobileperf.compute.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.mobileperf.compute.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
