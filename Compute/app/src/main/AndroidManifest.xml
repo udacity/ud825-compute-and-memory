@@ -47,6 +47,14 @@ limitations under the License.
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.mobileperf.compute.MainActivity" />
         </activity>
+        <activity
+            android:name="com.example.android.mobileperf.compute.DataStructuresActivity"
+            android:label="@string/title_activity_data_structures"
+            android:parentActivityName="com.example.android.mobileperf.compute.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.mobileperf.compute.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

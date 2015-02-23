@@ -36,6 +36,7 @@ public class MainActivity extends Activity {
 
         addButton(CachingActivity.class, "Batching and caching", rootView);
         addButton(BusyUIThreadActivity.class, "Slow onClick handler", rootView);
+        addButton(DataStructuresActivity.class, "Data structure selection", rootView);
     }
 
     public void addButton(final Class destination, String description, ViewGroup parent) {
