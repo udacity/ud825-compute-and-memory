@@ -65,17 +65,23 @@ public class MemoryChurnActivity extends Activity {
             }
         }
 
-        // Now go through and dump the sorted version of each row to output!
+        // Now go through and dump the sorted version of each row to output! This time, use a
+        // StringBuilder object so that we can construct one String per row, instead of wasting
+        // String objects with ridiculous concatenation that never ends.
+        // You may notice that the dancing pirate still seems to have lost the beat here. You would
+        // be correct. What else could you do now to like that pirate keep his groove? What have you
+        // learned?
+        StringBuilder sb = new StringBuilder();
+        String rowAsStr = "";
         for(int i = 0; i < lotsOfInts.length; i++) {
-            String rowAsStr = "";
+            sb.delete(0, rowAsStr.length()); // clear the previous row
             for (int j = 0; j < lotsOfInts[i].length; j++) {
-                // Clearly, the only reasonable way to construct a string is one character at a
-                // time, with lots and lots of convenient concatenation.
-                rowAsStr += getSorted(lotsOfInts[i])[j];
+                sb.append(getSorted(lotsOfInts[i])[j]);
                 if(j < (lotsOfInts[i].length - 1)){
-                    rowAsStr += ", ";
+                    sb.append(", ");
                 }
             }
+            rowAsStr = sb.toString();
             Log.i("CachingActivityExercise", "Row " + i + ": " + rowAsStr);
         }
     }
