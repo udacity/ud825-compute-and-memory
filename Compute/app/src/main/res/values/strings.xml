@@ -19,5 +19,8 @@
     <string name="app_name">Compute</string>
     <string name="title_activity_caching_exercise">Caching Exercise</string>
     <string name="title_activity_busy_uithread">Busy UI Thread Exercise</string>
-
+    <string name="caching_text">Compute some Fibonacci numbers.</string>
+    <string name="caching_button">Batching and caching</string>
+    <string name="busy_ui_button">Slow onClick handler</string>
+    <string name="busy_ui_load">Display an image.</string>
 </resources>

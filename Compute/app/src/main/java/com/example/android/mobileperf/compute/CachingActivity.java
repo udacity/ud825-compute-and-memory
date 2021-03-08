@@ -18,37 +18,34 @@ package com.example.android.mobileperf.compute;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.webkit.WebView;
-import android.widget.Button;
+
+import com.example.android.mobileperf.compute.databinding.ActivityCachingExerciseBinding;
 
 
 public class CachingActivity extends Activity {
     public static final String LOG_TAG = "CachingActivityExercise";
+    @SuppressWarnings("FieldCanBeLocal")
+    private ActivityCachingExerciseBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_caching_exercise);
+        binding = ActivityCachingExerciseBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        Button theButtonThatDoesFibonacciStuff = (Button) findViewById(R.id.caching_do_fib_stuff);
-        theButtonThatDoesFibonacciStuff.setText("Compute some Fibonacci numbers.");
+        binding.cachingDoFibStuff.setText(R.string.caching_text);
 
-        theButtonThatDoesFibonacciStuff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Compute the 40th number in the fibonacci sequence, then dump to log output.
-                Log.i(LOG_TAG, String.valueOf(computeFibonacci(40)));
-            }
+        binding.cachingDoFibStuff.setOnClickListener(v -> {
+            // Compute the 40th number in the fibonacci sequence, then dump to log output.
+            Log.i(LOG_TAG, String.valueOf(computeFibonacci(40)));
         });
 
         // It's much easier to see how your decisions affect framerate when there's something
         // changing on screen.  For entirely serious, educational purposes, a dancing pirate
         // will be included with this exercise.
-        WebView webView = (WebView) findViewById(R.id.webview);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.loadUrl("file:///android_asset/shiver_me_timbers.gif");
+        binding.webview.getSettings().setUseWideViewPort(true);
+        binding.webview.getSettings().setLoadWithOverviewMode(true);
+        binding.webview.loadUrl("file:///android_asset/shiver_me_timbers.gif");
     }
 
     /**
@@ -67,14 +64,8 @@ public class CachingActivity extends Activity {
      * @return the nth number of the fibonacci sequence.  Seriously, try to keep up.
      */
     public int computeFibonacci(int positionInFibSequence) {
-        int prev = 0;
-        int current = 1;
-        int newValue;
-        for (int i=1; i<positionInFibSequence; i++) {
-            newValue = current + prev;
-            prev = current;
-            current = newValue;
-        }
-        return current;
+        final double goldenRatio = (1+Math.sqrt(5))/2;
+        double foundFibonacci = (Math.pow(goldenRatio, positionInFibSequence) - Math.pow((-1 * goldenRatio), (-1 * positionInFibSequence)))/Math.sqrt(5);
+        return (int) Math.round(foundFibonacci);
     }
 }

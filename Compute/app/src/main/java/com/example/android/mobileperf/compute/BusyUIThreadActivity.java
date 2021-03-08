@@ -20,33 +20,31 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.ImageView;
+
+import com.example.android.mobileperf.compute.databinding.ActivityBusyUithreadBinding;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class BusyUIThreadActivity extends Activity {
+
+    private ActivityBusyUithreadBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_busy_uithread);
+        binding = ActivityBusyUithreadBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        Button theButtonThatLoadsAnImage = (Button) findViewById(R.id.busyui_button_load);
-        theButtonThatLoadsAnImage.setText("Display an image.");
+        binding.busyuiButtonLoad.setText(getText(R.string.busy_ui_load));
 
-        theButtonThatLoadsAnImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sepiaAndDisplayImage();
-            }
-        });
+        binding.busyuiButtonLoad.setOnClickListener(v -> sepiaAndDisplayImage());
 
-        WebView webView = (WebView) findViewById(R.id.webview);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
+        binding.webview.getSettings().setUseWideViewPort(true);
+        binding.webview.getSettings().setLoadWithOverviewMode(true);
 
-        webView.loadUrl("file:///android_asset/shiver_me_timbers.gif");
+        binding.webview.loadUrl("file:///android_asset/shiver_me_timbers.gif");
     }
 
     /**
@@ -54,6 +52,16 @@ public class BusyUIThreadActivity extends Activity {
      * a sepia filter, and displays it.
      */
     public void sepiaAndDisplayImage() {
+        ExecutorService service = Executors.newCachedThreadPool();
+        Future<Bitmap> futureManip = service.submit(this::imageManip);
+        try {
+            binding.busyuiImageview.setImageBitmap(futureManip.get());
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+    }
+
+    private Bitmap imageManip() {
         // The following blobs of code *gleefully* pilfered from the Android Training class,
         // appropriately titled "Loading Large Bitmaps Efficiently".  Efficiently, eh?
         // Challenge accepted!
@@ -65,8 +73,8 @@ public class BusyUIThreadActivity extends Activity {
 
         // Go through every single pixel in the bitmap, apply a sepia filter to it, and apply it
         // to the new "output" bitmap.
-        for(int x = 0; x < width; ++x) {
-            for(int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height; ++y) {
                 // get pixel color
                 int pixel = loadedBitmap.getPixel(x, y);
                 int alpha = Color.alpha(pixel);
@@ -80,18 +88,17 @@ public class BusyUIThreadActivity extends Activity {
                 // Note that if the resulting value is over 255, Math.Min brings it back down.
                 // So effectively, min establishes a max value!  Isn't that weird?
                 int outRed = (int) Math.min(
-                        (inputRed * .393) + (inputGreen *.769) + (inputBlue * .189), 255);
+                        (inputRed * .393) + (inputGreen * .769) + (inputBlue * .189), 255);
 
                 int outGreen = (int) Math.min(
-                        (inputRed * .349) + (inputGreen *.686) + (inputBlue * .168), 255);
+                        (inputRed * .349) + (inputGreen * .686) + (inputBlue * .168), 255);
 
                 int outBlue = (int) Math.min(
-                        (inputRed * .272) + (inputGreen *.534) + (inputBlue * .131), 255);
+                        (inputRed * .272) + (inputGreen * .534) + (inputBlue * .131), 255);
                 // apply new pixel color to output bitmap
                 sepiaBitmap.setPixel(x, y, Color.argb(alpha, outRed, outGreen, outBlue));
             }
         }
-        ImageView imageView = (ImageView) findViewById(R.id.busyui_imageview);
-        imageView.setImageBitmap(sepiaBitmap);
+        return sepiaBitmap;
     }
 }
